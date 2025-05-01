@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voice to Text</title>
+  <style>
+    body { font-family: Arial, padding: 2rem; }
+    #text { margin-top: 1rem; font-size: 1.2rem; }
+    button { padding: 10px 20px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h2>🎙️ Voice to Text Converter</h2>
+  <button onclick="startRecognition()">Start Speaking</button>
+  <div id="text">Transcription will appear here...</div>
+
+  <script>
+    function startRecognition() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.start();
+      document.getElementById("text").innerText = "Listening...";
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        document.getElementById("text").innerText = transcript;
+      };
+
+      recognition.onerror = function(event) {
+        document.getElementById("text").innerText = 'Error: ' + event.error;
+      };
+    }
+  </script>
+</body>
+</html>
